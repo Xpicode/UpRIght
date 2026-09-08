@@ -32,7 +32,7 @@ export function PageHeader({ eyebrow, title, intro, dark, image, imagePosition, 
       )}
       <div
         className={[
-          "blob pointer-events-none absolute -right-32 -top-20 -z-10 h-[30rem] w-[30rem] blur-[110px]",
+          "pointer-events-none absolute -right-32 -top-20 -z-10 h-[30rem] w-[30rem] rounded-full blur-[110px]",
           dark ? "bg-brand/25" : image ? "hidden" : "bg-brand/45",
         ].join(" ")}
       />

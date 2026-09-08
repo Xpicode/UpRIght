@@ -17,7 +17,7 @@ type Props = {
 
 /**
  * Photo backdrop for page headers: slow Ken Burns drift, parallax on scroll,
- * a passing light sweep, and white gradients so the headline stays readable.
+ * and white gradients so the headline stays readable.
  */
 export function HeaderBackdrop({ src, alt = "", position = "center", shiftX = "0%", dark = false }: Props) {
   const ref = useRef<HTMLDivElement>(null);
@@ -68,19 +68,6 @@ export function HeaderBackdrop({ src, alt = "", position = "center", shiftX = "0
           <div className="absolute inset-0 bg-gradient-to-r from-white via-white/70 to-white/5" />
           <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-white" />
         </>
-      )}
-
-      {/* passing light sweep */}
-      {!reduce && (
-        <motion.div
-          className={[
-            "absolute -inset-y-1/2 w-[22vw] rotate-12 bg-gradient-to-r from-transparent to-transparent blur-2xl",
-            dark ? "via-brand/15" : "via-white/35",
-          ].join(" ")}
-          initial={{ x: "-30vw" }}
-          animate={{ x: "130vw" }}
-          transition={{ duration: 8, repeat: Infinity, ease: "linear", repeatDelay: 5 }}
-        />
       )}
     </div>
   );

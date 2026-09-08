@@ -42,6 +42,22 @@ body {
   color: var(--ink);
 }
 
+/* Keyboard focus — a clear brand ring on anything focusable, without affecting mouse clicks. */
+:focus-visible {
+  outline: 3px solid var(--brand-deep);
+  outline-offset: 3px;
+  border-radius: 0.5rem;
+}
+.btn:focus-visible,
+.office-marker:focus-visible {
+  outline-offset: 4px;
+  border-radius: 999px;
+}
+/* On dark sections the yellow ring needs a dark gap so it reads against light buttons. */
+.bg-ink :focus-visible {
+  box-shadow: 0 0 0 3px var(--ink);
+}
+
 @layer components {
 /* ---- utilities ---- */
 .container-x {
@@ -196,19 +212,6 @@ body {
 
 
 /* ---- animations ---- */
-@keyframes blob {
-  0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; transform: translate(0, 0) rotate(0deg); }
-  33%      { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; transform: translate(-30px, 20px) rotate(8deg); }
-  66%      { border-radius: 50% 40% 60% 30% / 40% 70% 30% 60%; transform: translate(20px, -30px) rotate(-6deg); }
-}
-.blob { animation: blob 14s ease-in-out infinite; }
-
-@keyframes pulse-ring {
-  0%, 100% { transform: scale(1); opacity: 0.6; }
-  50%      { transform: scale(1.35); opacity: 1; }
-}
-.pulse-ring { animation: pulse-ring 4s ease-in-out infinite; }
-
 @keyframes bounce-y {
   0%, 100% { transform: translateY(0); }
   50%      { transform: translateY(4px); }
@@ -317,7 +320,7 @@ body {
 .shine:hover::before { transform: translateX(120%); }
 
 @media (prefers-reduced-motion: reduce) {
-  .blob, .pulse-ring, .bounce-y, .office-marker__ring { animation: none; }
+  .bounce-y, .office-marker__ring { animation: none; }
   .btn-swap > span[data-text]::after { display: none; }
   .btn-swap:hover > span[data-text] > .label { transform: none; }
 }

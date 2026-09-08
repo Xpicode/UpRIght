@@ -49,7 +49,7 @@ const coverFor = (href: string): Cover =>
   COVERS.find((c) => c.match.test(href)) ?? { match: /./, src: "/images/photos/conference.webp" };
 const snapshot = () => phase;
 
-const COVER_MS = 520;
+const COVER_MS = 260;
 
 export function useTransitionNavigate() {
   const router = useRouter();
@@ -89,9 +89,6 @@ export function TransitionLink({ href, children, label: lbl, onClick, ...rest }:
   return (
     <Link
       href={href}
-      // Don't pre-load every linked page in the background — only the one that is
-      // actually clicked gets fetched (while the curtain covers the screen).
-      prefetch={false}
       {...rest}
       onClick={(e) => {
         onClick?.(e);
@@ -115,7 +112,7 @@ export function RouteCurtain() {
   // remount when navigating between sibling routes, e.g. /events → /events/[slug].)
   useEffect(() => {
     if (phase !== "cover") return;
-    const id = window.setTimeout(() => setPhase("reveal"), 120);
+    const id = window.setTimeout(() => setPhase("reveal"), 60);
     return () => window.clearTimeout(id);
   }, [pathname]);
 
@@ -137,7 +134,7 @@ export function RouteCurtain() {
       variants={{
         idle: { y: "100%", transition: { duration: 0 } },
         cover: { y: "0%", transition: { duration: COVER_MS / 1000, ease: [0.76, 0, 0.24, 1] } },
-        reveal: { y: "-100%", transition: { duration: 0.7, ease: [0.76, 0, 0.24, 1] } },
+        reveal: { y: "-100%", transition: { duration: 0.45, ease: [0.76, 0, 0.24, 1] } },
       }}
       onAnimationComplete={(def) => {
         if (def === "reveal") setPhase("idle", "");

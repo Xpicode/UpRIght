@@ -3,10 +3,12 @@
 import { useSyncExternalStore } from "react";
 
 /**
- * Tiny shared flag so hero animations wait for the preloader to finish.
- * `markIntroDone()` is called by the Preloader (or immediately if it's skipped).
+ * Shared "intro finished" flag that the hero and navbar wait on.
+ * The preloader is no longer mounted (see (site)/layout.tsx), so this starts
+ * as done and the entrance animations play as soon as the page mounts.
+ * If you re-add <Preloader />, set this back to `false`.
  */
-let done = false;
+let done = true;
 const listeners = new Set<() => void>();
 
 export function markIntroDone() {

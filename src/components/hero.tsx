@@ -39,7 +39,7 @@ export function Hero() {
       <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[52rem] md:h-[58rem]">
         <HeaderBackdrop src="/images/photos/building.webp" position="right 40%" />
       </div>
-      <div className="blob pointer-events-none absolute -right-32 top-10 -z-10 h-[34rem] w-[34rem] bg-brand/10 blur-[110px]" />
+      <div className="pointer-events-none absolute -right-32 top-10 -z-10 h-[34rem] w-[34rem] rounded-full bg-brand/10 blur-[110px]" />
 
       <div className="container-x">
         <div className="max-w-4xl">
@@ -176,7 +176,7 @@ export function Hero() {
               }}
               className="relative h-full overflow-hidden rounded-[1.75rem] bg-ink p-6 text-white"
             >
-              <div className="pulse-ring absolute -right-10 -top-10 h-40 w-40 rounded-full bg-brand/30 blur-3xl" />
+              <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-brand/30 blur-3xl" />
               <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-white/50">
                 <Award size={14} className="text-brand" /> Flagship
               </div>
@@ -187,12 +187,13 @@ export function Hero() {
                 Border health verification that processed ~4 million travellers
                 and helped the Philippines reopen to the world.
               </p>
-              <a
-                href="#work"
-                className="link-underline mt-4 inline-block text-sm font-semibold text-brand"
+              <TransitionLink
+                href="/work/one-health-pass"
+                label="One Health Pass"
+                className="link-underline mt-4 inline-flex items-center gap-1 text-sm font-semibold text-brand"
               >
-                Read the story →
-              </a>
+                Read the story <ArrowRight size={14} />
+              </TransitionLink>
             </motion.div>
           </motion.div>
         </div>

@@ -11,6 +11,10 @@ const SESSION_KEY = "upright:preloaded";
 /**
  * Brand intro: yellow curtain, logo + cycling words, then the curtain wipes
  * upward to reveal the page. Plays once per browser session (~1.6s).
+ *
+ * NOT MOUNTED. Removed from (site)/layout.tsx because it holds visitors on a
+ * ready page for 1.6s. To bring it back: add <Preloader /> to the layout and
+ * set `done = false` in motion/intro.ts.
  */
 export function Preloader() {
   const reduce = useReducedMotion();
