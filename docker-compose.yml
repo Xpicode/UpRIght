@@ -22,7 +22,9 @@ services:
       POSTGRES_PASSWORD: upright
       POSTGRES_DB: upright
     ports:
-      - "${DB_PORT:-5433}:5432"
+      # 5434 on the host, because other projects on this machine already use 5432/5433.
+      # Override with DB_PORT in .env.local if it ever clashes.
+      - "${DB_PORT:-5434}:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
       # Creates the contact_messages table on first start.

@@ -51,6 +51,8 @@ const nextConfig: NextConfig = {
     // Testimonial portraits (stock photos carried over from the previous site).
     remotePatterns: [{ protocol: "https", hostname: "images.unsplash.com" }],
     formats: ["image/avif", "image/webp"],
+    // Quality values used by <Image quality={...}> across the site (Next 16 requires listing them).
+    qualities: [75, 85],
   },
   async headers() {
     return [
