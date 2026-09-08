@@ -1,0 +1,68 @@
+# The whole site runs in Docker:  http://localhost:3000
+#
+#   npm run start:all   (= docker compose up -d --build)   build + start site, database, DB viewer
+#   → Site http://localhost:3000   Admin http://localhost:3000/admin   DB viewer http://localhost:8085
+#
+# After you change code, run `npm run start:all` again to rebuild the site container.
+# For live editing with hot-reload use `npm run dev` (http://localhost:3001) instead.
+#
+#   docker compose down              # stop containers
+#   docker compose down -v           # stop AND wipe the database
+#
+# Login uses ADMIN_EMAIL / ADMIN_PASSWORD from .env.local (defaults in .env.docker).
+
+name: upright
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: upright
+      POSTGRES_PASSWORD: upright
+      POSTGRES_DB: upright
+    ports:
+      - "${DB_PORT:-5433}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      # Creates the contact_messages table on first start.
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U upright -d upright"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  web:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "${WEB_PORT:-3000}:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+    # Defaults come from .env.docker; anything you put in .env.local overrides them.
+    env_file:
+      - .env.docker
+      - path: .env.local
+        required: false
+    environment:
+      # Inside Docker the database is always the "db" service above.
+      DATABASE_URL: postgres://upright:upright@db:5432/upright
+      NEXT_PUBLIC_SITE_URL: http://localhost:${WEB_PORT:-3000}
+
+  # Browser UI for the database — open http://localhost:8085
+  adminer:
+    image: adminer:4
+    restart: unless-stopped
+    ports:
+      - "${ADMINER_PORT:-8085}:8080"
+    environment:
+      ADMINER_DEFAULT_SERVER: db
+      ADMINER_DESIGN: dracula
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:

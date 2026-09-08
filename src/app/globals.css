@@ -1,0 +1,332 @@
+@import "tailwindcss";
+
+:root {
+  --brand: #ffe319;
+  --brand-deep: #f5c400;
+  --ink: #0b0b0c;
+  --ink-soft: #1c1c1f;
+  --cream: #faf6ec;
+  --paper: #ffffff;
+  --muted: #5f5f66;
+  --line: rgba(11, 11, 12, 0.08);
+}
+
+@theme inline {
+  --color-brand: var(--brand);
+  --color-brand-deep: var(--brand-deep);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-cream: var(--cream);
+  --color-paper: var(--paper);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --font-sans: var(--font-inter), system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: var(--font-display), var(--font-inter), system-ui, sans-serif;
+  --radius-xl2: 1.75rem;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--brand);
+  color: var(--ink);
+}
+
+@layer components {
+/* ---- utilities ---- */
+.container-x {
+  width: 100%;
+  max-width: 76rem;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+@media (min-width: 768px) {
+  .container-x {
+    padding-inline: 2rem;
+  }
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.eyebrow::before {
+  content: "";
+  width: 1.5rem;
+  height: 2px;
+  background: var(--brand);
+  border-radius: 999px;
+}
+.eyebrow.on-dark {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.display {
+  font-family: var(--font-display);
+  letter-spacing: -0.03em;
+  line-height: 0.98;
+  font-weight: 700;
+}
+
+.highlight {
+  background-image: linear-gradient(transparent 58%, var(--brand) 58%);
+  background-repeat: no-repeat;
+  padding-inline: 0.1em;
+}
+
+.grid-bg {
+  background-image:
+    linear-gradient(to right, var(--line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--line) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, #000 40%, transparent 100%);
+}
+
+.marquee {
+  display: flex;
+  gap: 4rem;
+  width: max-content;
+  animation: marquee 32s linear infinite;
+}
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee:hover {
+  animation-play-state: paused;
+}
+
+.card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl2);
+  transition:
+    transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 24px 48px -24px rgba(11, 11, 12, 0.25);
+  border-color: rgba(11, 11, 12, 0.16);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  padding: 0.9rem 1.5rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  white-space: nowrap;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.btn:active {
+  transform: scale(0.98);
+}
+.btn-brand {
+  background: var(--brand);
+  color: var(--ink);
+  box-shadow: 0 10px 30px -12px rgba(255, 227, 25, 0.9);
+}
+.btn-brand:hover {
+  background: var(--brand-deep);
+}
+.btn-ink {
+  background: var(--ink);
+  color: #fff;
+}
+.btn-ink:hover {
+  background: #26262b;
+}
+.btn-ghost {
+  border: 1px solid rgba(11, 11, 12, 0.16);
+  color: var(--ink);
+}
+.btn-ghost:hover {
+  background: var(--cream);
+}
+
+.input {
+  width: 100%;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.9rem 1rem;
+  color: #fff;
+  outline: none;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
+}
+.input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+.input:focus {
+  border-color: var(--brand);
+  background: rgba(255, 255, 255, 0.08);
+}
+}
+
+
+/* ---- animations ---- */
+@keyframes blob {
+  0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; transform: translate(0, 0) rotate(0deg); }
+  33%      { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; transform: translate(-30px, 20px) rotate(8deg); }
+  66%      { border-radius: 50% 40% 60% 30% / 40% 70% 30% 60%; transform: translate(20px, -30px) rotate(-6deg); }
+}
+.blob { animation: blob 14s ease-in-out infinite; }
+
+@keyframes pulse-ring {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50%      { transform: scale(1.35); opacity: 1; }
+}
+.pulse-ring { animation: pulse-ring 4s ease-in-out infinite; }
+
+@keyframes bounce-y {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(4px); }
+}
+.bounce-y { animation: bounce-y 1.6s ease-in-out infinite; }
+
+.marquee-reverse { animation-direction: reverse; animation-duration: 40s; }
+.team-strip { animation-duration: 55s; }
+
+/* Button label that slides up and is replaced by a copy rising from below.
+   Markup: <a class="btn btn-swap"><span data-text="Label"><span class="label">Label</span></span></a> */
+.btn-swap > span[data-text] {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  line-height: 1.2;
+}
+.btn-swap > span[data-text] > .label {
+  display: inline-block;
+  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.btn-swap > span[data-text]::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  transform: translateY(110%);
+  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.btn-swap:hover > span[data-text] > .label { transform: translateY(-110%); }
+.btn-swap:hover > span[data-text]::after { transform: translateY(0); }
+
+/* Process steps: number lights up + card lifts when in view */
+.step .step-num {
+  color: rgba(11, 11, 12, 0.18);
+  transition: color 0.6s ease, transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+  display: inline-block;
+}
+.step:hover .step-num,
+.step.is-active .step-num {
+  color: var(--brand-deep);
+  transform: translateX(4px);
+}
+
+/* Office map markers: yellow dot + expanding ring (active one pulses bigger) */
+.office-marker {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+.office-marker__dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background: var(--brand);
+  box-shadow: 0 0 0 3px var(--ink), 0 0 0 5px rgba(255, 255, 255, 0.9), 0 8px 20px rgba(11, 11, 12, 0.35);
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.office-marker__ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  border: 2px solid var(--brand-deep);
+  background: rgba(255, 227, 25, 0.25);
+  opacity: 0;
+}
+.office-marker.is-active .office-marker__dot { transform: scale(1.35); }
+.office-marker.is-active .office-marker__ring { animation: marker-ring 2s ease-out infinite; }
+.office-marker:hover .office-marker__dot { transform: scale(1.5); }
+@keyframes marker-ring {
+  0%   { transform: scale(0.35); opacity: 0.9; }
+  100% { transform: scale(1.6);  opacity: 0; }
+}
+.maplibregl-ctrl-attrib { font-size: 10px; background: rgba(255,255,255,0.7) !important; color: rgba(11,11,12,0.6); }
+.maplibregl-ctrl-attrib a { color: rgba(11,11,12,0.8); }
+
+/* Animated underline for text links */
+.link-underline { position: relative; }
+.link-underline::after {
+  content: "";
+  position: absolute;
+  left: 0; bottom: -2px;
+  height: 2px; width: 100%;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.link-underline:hover::after { transform: scaleX(1); transform-origin: left; }
+
+/* Card image zoom + shine sweep on hover */
+.shine { position: relative; overflow: hidden; }
+.shine::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.35) 50%, transparent 60%);
+  transform: translateX(-120%);
+  transition: transform 0.9s ease;
+  pointer-events: none;
+}
+.shine:hover::before { transform: translateX(120%); }
+
+@media (prefers-reduced-motion: reduce) {
+  .blob, .pulse-ring, .bounce-y, .office-marker__ring { animation: none; }
+  .btn-swap > span[data-text]::after { display: none; }
+  .btn-swap:hover > span[data-text] > .label { transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee {
+    animation: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}

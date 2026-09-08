@@ -1,0 +1,58 @@
+# PRODUCTION compose — hardened version of docker-compose.yml.
+#
+#   npm run prod        (= docker compose --env-file .env.local -f docker-compose.prod.yml up -d --build)
+#
+# Differences from the dev file:
+#   • no Adminer (database UI) — use `docker compose exec db psql -U upright` if you need SQL access
+#   • the database port is NOT published to the host
+#   • the web port binds to 127.0.0.1 only — put Caddy / nginx / Traefik in front for HTTPS
+#   • the database password comes from POSTGRES_PASSWORD in .env.local (required)
+#
+# Required in .env.local: POSTGRES_PASSWORD, ADMIN_EMAIL, ADMIN_PASSWORD, AUTH_SECRET,
+#                         NEXT_PUBLIC_SITE_URL (your real https:// domain)
+
+name: upright
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: upright
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env.local}
+      POSTGRES_DB: upright
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U upright -d upright"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  web:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${WEB_PORT:-3000}:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - .env.docker
+      - .env.local
+    environment:
+      DATABASE_URL: postgres://upright:${POSTGRES_PASSWORD}@db:5432/upright
+      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:?Set NEXT_PUBLIC_SITE_URL in .env.local}
+    # Drop capabilities the app never needs.
+    read_only: false
+    security_opt:
+      - no-new-privileges:true
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  pgdata:
