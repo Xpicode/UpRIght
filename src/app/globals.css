@@ -6,7 +6,7 @@
   --ink: #0b0b0c;
   --ink-soft: #1c1c1f;
   --cream: #faf6ec;
-  --paper: #ffffff;
+  --paper: #f5f5f5;
   --muted: #5f5f66;
   --line: rgba(11, 11, 12, 0.08);
 }
@@ -18,6 +18,7 @@
   --color-ink-soft: var(--ink-soft);
   --color-cream: var(--cream);
   --color-paper: var(--paper);
+  --color-white: var(--paper);
   --color-muted: var(--muted);
   --color-line: var(--line);
   --font-sans: var(--font-inter), system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -176,7 +177,7 @@ body {
 }
 .btn-ink {
   background: var(--ink);
-  color: #fff;
+  color: var(--paper);
 }
 .btn-ink:hover {
   background: #26262b;
@@ -195,7 +196,7 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.12);
   background: rgba(255, 255, 255, 0.05);
   padding: 0.9rem 1rem;
-  color: #fff;
+  color: var(--paper);
   outline: none;
   transition:
     border-color 0.2s,
@@ -217,6 +218,20 @@ body {
   50%      { transform: translateY(4px); }
 }
 .bounce-y { animation: bounce-y 1.6s ease-in-out infinite; }
+
+/* Loading curtain: a light sweeps across the wordmark while the page loads. */
+@keyframes logo-sweep {
+  0%   { -webkit-mask-position: 140% 0; mask-position: 140% 0; }
+  100% { -webkit-mask-position: -40% 0; mask-position: -40% 0; }
+}
+.logo-sweep {
+  -webkit-mask-image: linear-gradient(75deg, #000 38%, rgba(0, 0, 0, 0.25) 50%, #000 62%);
+  mask-image: linear-gradient(75deg, #000 38%, rgba(0, 0, 0, 0.25) 50%, #000 62%);
+  -webkit-mask-size: 260% 100%;
+  mask-size: 260% 100%;
+  will-change: mask-position;
+  animation: logo-sweep 1.5s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
 
 .marquee-reverse { animation-direction: reverse; animation-duration: 40s; }
 .team-strip { animation-duration: 55s; }
@@ -320,7 +335,7 @@ body {
 .shine:hover::before { transform: translateX(120%); }
 
 @media (prefers-reduced-motion: reduce) {
-  .bounce-y, .office-marker__ring { animation: none; }
+  .bounce-y, .office-marker__ring, .logo-sweep { animation: none; }
   .btn-swap > span[data-text]::after { display: none; }
   .btn-swap:hover > span[data-text] > .label { transform: none; }
 }
